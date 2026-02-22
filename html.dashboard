@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Caffeine Dreams</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme1">
+
+<!-- NAVIGATION -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo-section">
+            <div class="coffee-logo">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="cupGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#8B4513;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 20 25 L 20 75 Q 20 85 30 85 L 70 85 Q 80 85 80 75 L 80 25 Z" fill="url(#cupGradient5)" stroke="#654321" stroke-width="2"/>
+                    <path d="M 80 40 Q 95 40 95 55 Q 95 70 80 70" fill="none" stroke="#8B4513" stroke-width="3"/>
+                    <path d="M 25 30 L 25 70 Q 25 80 30 80 L 70 80 Q 75 80 75 70 L 75 30 Z" fill="#4A2511" opacity="0.7"/>
+                    <path d="M 35 20 Q 35 10 40 10" fill="none" stroke="#D4A574" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 50 18 Q 50 8 55 8" fill="none" stroke="#D4A574" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M 65 20 Q 65 10 70 10" fill="none" stroke="#D4A574" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <span class="brand-name">? Caffeine Dreams</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><span class="user-email"></span></li>
+            <li><button class="btn-logout" onclick="logout()">Logout</button></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Dashboard</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" onclick="openSection('dashboard')">?? Home</a></li>
+            <li><a href="#" onclick="openSection('menu')">?? Order Menu</a></li>
+            <li><a href="#" onclick="openSection('customize')">? Customize Drink</a></li>
+            <li><a href="#" onclick="openSection('orders')">?? My Orders</a></li>
+            <li><a href="#" onclick="openSection('profile')">?? Profile</a></li>
+            <li><a href="#" onclick="openSection('chat')">?? Community Chat</a></li>
+            <li id="adminMenu" style="display:none;"><a href="#" onclick="openSection('admin')">?? Admin Panel</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- DASHBOARD HOME -->
+        <section id="dashboard" class="content-section active">
+            <h2>Welcome Back! ?</h2>
+            <div class="user-info">
+                <p>User ID: <strong><span id="userId"></span></strong></p>
+                <p>Email: <strong><span id="userDisplay"></span></strong></p>
+                <p>Joined: <strong><span id="joinDate"></span></strong></p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h4>?? Total Orders</h4>
+                    <p class="stat-number" id="totalOrders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>?? Total Spent</h4>
+                    <p class="stat-number" id="totalSpent">?0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>? Loyalty Points</h4>
+                    <p class="stat-number" id="loyaltyPoints">0</p>
+                </div>
+            </div>
+
+            <div class="theme-selector">
+                <h3>?? Change Theme</h3>
+                <div class="theme-options">
+                    <button class="theme-btn" onclick="changeTheme('theme1')" title="Boho Beige">Boho Beige</button>
+                    <button class="theme-btn" onclick="changeTheme('theme2')" title="Dark Espresso">Dark Espresso</button>
+                    <button class="theme-btn" onclick="changeTheme('theme3')" title="Mint Modern">Mint Modern</button>
+                    <button class="theme-btn" onclick="changeTheme('theme4')" title="Sunset Peach">Sunset Peach</button>
+                    <button class="theme-btn" onclick="changeTheme('theme5')" title="Royal Mocha">Royal Mocha</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENU SECTION -->
+        <section id="menu" class="content-section">
+            <h2>? Order Menu</h2>
+            
+            <div class="menu-search">
+                <input type="text" id="searchBar" placeholder="?? Search menu..." onkeyup="searchMenu()" class="search-input">
+                <select id="categoryFilter" onchange="filterByCategory()" class="category-filter">
+                    <option value="">All Categories</option>
+                    <option value="cappuccino">Cappuccino</option>
+                    <option value="latte">Latte</option>
+                    <option value="frappuccino">Frappuccino</option>
+                    <option value="espresso">Espresso</option>
+                    <option value="mocha">Mocha</option>
+                    <option value="cold-brew">Cold Brew</option>
+                    <option value="affogato">Affogato</option>
+                    <option value="hot-chocolate">Hot Chocolate</option>
+                    <option value="wellness">Wellness</option>
+                    <option value="basics">Basics</option>
+                    <option value="juices">Fresh Juices</option>
+                    <option value="cakes">Cakes & Pastries</option>
+                    <option value="cookies">Cookies</option>
+                    <option value="pies">Pies & Tarts</option>
+                    <option value="donuts">Donuts</option>
+                    <option value="ice-cream">Ice Cream</option>
+                    <option value="croissants">Croissants</option>
+                    <option value="snacks">Snacks</option>
+                </select>
+            </div>
+
+            <div id="menu" class="menu-grid"></div>
+            
+            <div class="cart-section">
+                <h3>?? Your Cart</h3>
+                <div id="cart" class="cart-items"></div>
+                <div class="cart-total">
+                    <h4>Subtotal: ? <span id="subtotal">0</span></h4>
+                    <h4>Tax (5%): ? <span id="tax">0</span></h4>
+                    <h4>Delivery: ? <span id="delivery">50</span></h4>
+                    <h3>Total: ? <span id="total">0</span></h3>
+                </div>
+                <button class="btn-primary" onclick="goToPayment()" id="paymentBtn" style="display:none;">Proceed to Payment</button>
+            </div>
+        </section>
+
+        <!-- CUSTOMIZE DRINK SECTION -->
+        <section id="customize" class="content-section">
+            <h2>? Create Your Perfect Drink</h2>
+            <div class="customize-container">
+                <div class="customize-panel">
+                    <h3>Build Your Custom Drink</h3>
+                    
+                    <!-- Base Selection -->
+                    <div class="customize-group">
+                        <label>?? Select Base:</label>
+                        <select id="baseSelect" onchange="updateCustomizePreview()">
+                            <option value="">Choose a base...</option>
+                            <option value="espresso">Espresso Shot</option>
+                            <option value="milk">Steamed Milk</option>
+                            <option value="almond-milk">Almond Milk</option>
+                            <option value="coconut-milk">Coconut Milk</option>
+                            <option value="oat-milk">Oat Milk</option>
+                        </select>
+                    </div>
+
+                    <!-- Flavor Selection -->
+                    <div class="customize-group">
+                        <label>?? Select Flavor:</label>
+                        <div class="flavor-buttons">
+                            <button class="flavor-btn" onclick="toggleFlavor('vanilla')">Vanilla</button>
+                            <button class="flavor-btn" onclick="toggleFlavor('hazelnut')">Hazelnut</button>
+                            <button class="flavor-btn" onclick="toggleFlavor('caramel')">Caramel</button>
+                            <button class="flavor-btn" onclick="toggleFlavor('chocolate')">Chocolate</button>
+                            <button class="flavor-btn" onclick="toggleFlavor('mocha')">Mocha</button>
+                            <button class="flavor-btn" onclick="toggleFlavor('cinnamon')">Cinnamon</button>
+                        </div>
+                    </div>
+
+                    <!-- Toppings Selection -->
+                    <div class="customize-group">
+                        <label>? Add Toppings:</label>
+                        <div class="toppings-list">
+                            <label><input type="checkbox" onchange="updateCustomizePreview()"> Whipped Cream</label>
+                            <label><input type="checkbox" onchange="updateCustomizePreview()"> Caramel Drizzle</label>
+                            <label><input type="checkbox" onchange="updateCustomizePreview()"> Cocoa Powder</label>
+                            <label><input type="checkbox" onchange="updateCustomizePreview()"> Marshmallows</label>
+                            <label><input type="checkbox" onchange="updateCustomizePreview()"> Cinnamon Dust</label>
+                            <label><input type="checkbox" onchange="updateCustomizePreview()"> Chocolate Chips</label>
+                        </div>
+                    </div>
+
+                    <!-- Temperature Selection -->
+                    <div class="customize-group">
+                        <label>??? Temperature:</label>
+                        <select id="tempSelect" onchange="updateCustomizePreview()">
+                            <option value="hot">Hot</option>
+                            <option value="cold">Cold/Iced</option>
+                            <option value="frozen">Frozen</option>
+                        </select>
+                    </div>
+
+                    <!-- Price Display -->
+                    <div class="customize-price">
+                        <h4>Custom Price: ?<span id="customPrice">0</span></h4>
+                    </div>
+
+                    <!-- Add to Cart -->
+                    <button class="btn-primary" onclick="addCustomDrinkToCart()">Add Custom Drink to Cart</button>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="customize-preview">
+                    <div class="preview-cup">
+                        <div class="cup-body">
+                            <div class="cup-content">
+                                <div class="liquid" id="liquidPreview"></div>
+                            </div>
+                        </div>
+                        <div class="steam" id="steamPreview"></div>
+                    </div>
+                    <h4>Your Custom Drink</h4>
+                    <p id="previewText">Select options to preview your drink</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAYMENT SECTION -->
+        <section id="payment" class="content-section">
+            <h2>?? Secure Payment</h2>
+            <div class="payment-container">
+                <div class="payment-form">
+                    <form id="paymentForm">
+                        <h3>Payment Details</h3>
+                        
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            <span class="error-msg" id="cardError"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Card Holder Name</label>
+                                <input type="text" id="cardName" placeholder="John Doe" required>
+                                <span class="error-msg" id="nameError"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry (MM/YY)</label>
+                                <input type="text" id="cardExpiry" placeholder="12/25" maxlength="5" required>
+                                <span class="error-msg" id="expiryError"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
+                                <span class="error-msg" id="cvvError"></span>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-primary" onclick="processPayment()">Pay Now</button>
+                        <button type="button" class="btn-secondary" onclick="openSection('menu')">Cancel</button>
+                    </form>
+                </div>
+
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="paymentItems"></div>
+                    <hr>
+                    <p>Subtotal: ?<span id="paymentSubtotal">0</span></p>
+                    <p>Tax: ?<span id="paymentTax">0</span></p>
+                    <p>Delivery: ?50</p>
+                    <h4>Total: ?<span id="paymentTotal">0</span></h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRACKING SECTION -->
+        <section id="tracking" class="content-section">
+            <h2>?? Order Status</h2>
+            <div class="tracking-card" id="trackingContent"></div>
+        </section>
+
+        <!-- ORDERS SECTION -->
+        <section id="orders" class="content-section">
+            <h2>?? My Orders</h2>
+            <div id="ordersList" class="orders-list"></div>
+        </section>
+
+        <!-- PROFILE SECTION -->
+        <section id="profile" class="content-section">
+            <h2>?? My Profile</h2>
+            <div class="profile-card">
+                <div class="profile-info">
+                    <p><strong>User ID:</strong> <span id="profileId"></span></p>
+                    <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+                    <p><strong>Joined:</strong> <span id="profileJoined"></span></p>
+                    <p><strong>Total Orders:</strong> <span id="profileOrders"></span></p>
+                    <p><strong>Total Spent:</strong> ?<span id="profileSpent"></span></p>
+                </div>
+                <button class="btn-secondary" onclick="logout()">Logout</button>
+            </div>
+        </section>
+
+        <!-- CHAT SECTION -->
+        <section id="chat" class="content-section">
+            <h2>?? Community Chat</h2>
+            <div class="chat-container">
+                <div id="chatBox" class="chat-box"></div>
+                <div class="chat-input-area">
+                    <div class="chat-input-group">
+                        <input id="chatInput" placeholder="Type your message..." class="chat-input" maxlength="500">
+                        <button class="btn-primary" onclick="sendMessage()">Send</button>
+                    </div>
+                    <div class="chat-info">
+                        <p id="userCount">Users Online: 0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN PANEL SECTION -->
+        <section id="admin" class="content-section">
+            <h2>?? Admin Panel</h2>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" onclick="switchAdminTab('orders')">Orders</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('users')">Users</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('chat')">Chat Management</button>
+                <button class="admin-tab-btn" onclick="switchAdminTab('analytics')">Analytics</button>
+            </div>
+
+            <!-- ORDERS TAB -->
+            <div id="ordersTab" class="admin-tab active">
+                <h3>All Orders</h3>
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrdersList"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- USERS TAB -->
+            <div id="usersTab" class="admin-tab">
+                <h3>User Management</h3>
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Email</th>
+                                <th>Joined</th>
+                                <th>Orders</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUsersList"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CHAT MANAGEMENT TAB -->
+            <div id="chatTab" class="admin-tab">
+                <h3>Chat Moderation</h3>
+                <div class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Message</th>
+                                <th>Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminChatList"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ANALYTICS TAB -->
+            <div id="analyticsTab" class="admin-tab">
+                <h3>Analytics</h3>
+                <div class="analytics-cards">
+                    <div class="analytics-card">
+                        <h4>Total Revenue</h4>
+                        <p class="analytics-number">?<span id="totalRevenue">0</span></p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Total Orders</h4>
+                        <p class="analytics-number"><span id="analyticsOrders">0</span></p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Total Users</h4>
+                        <p class="analytics-number"><span id="analyticsUsers">0</span></p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Active Users</h4>
+                        <p class="analytics-number"><span id="activeUsers">0</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
