@@ -30,7 +30,7 @@ const allMenuItems = {
         { name: "Flavored Espresso", price: 160, emoji: "?", desc: "Flavored espresso" }
     ],
     mocha: [
-        { name: "Classic Caffè Mocha", price: 230, emoji: "??", desc: "Espresso + chocolate" },
+        { name: "Classic CaffÃ¨ Mocha", price: 230, emoji: "??", desc: "Espresso + chocolate" },
         { name: "White Chocolate Mocha", price: 245, emoji: "??", desc: "White chocolate" },
         { name: "Dark Mocha", price: 235, emoji: "??", desc: "Dark chocolate mocha" },
         { name: "Caramel Mocha", price: 250, emoji: "??", desc: "Caramel mocha" },
@@ -151,6 +151,16 @@ let orders = JSON.parse(localStorage.getItem("orders")) || [];
 let messages = JSON.parse(localStorage.getItem("chat")) || [];
 let selectedFlavors = [];
 
+function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]));
+}
+
 window.addEventListener('load', () => {
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
@@ -227,7 +237,7 @@ function changeTheme(theme) {
 }
 
 function displayMenu(items) {
-    let menuHTML = document.getElementById('menu');
+    let menuHTML = document.getElementById('menuGrid');
     if (!menuHTML) return;
     
     menuHTML.innerHTML = "";
@@ -498,6 +508,9 @@ function toggleFlavor(flavor) {
     } else {
         selectedFlavors.push(flavor);
     }
+    document.querySelectorAll('.flavor-btn').forEach((button) => {
+        button.classList.toggle('selected', selectedFlavors.includes(button.dataset.flavor));
+    });
     updateCustomizePreview();
 }
 
@@ -578,14 +591,20 @@ function addCustomDrinkToCart() {
 // CHAT FUNCTIONS
 function loadChat() {
     const chatBox = document.getElementById('chatBox');
+    const userCount = document.getElementById('userCount');
+
+    if (userCount) {
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        userCount.textContent = `Registered Users: ${Object.keys(users).length}`;
+    }
     
     if (messages.length === 0) {
         chatBox.innerHTML = '<p style="text-align:center; color: #999; padding: 20px;">No messages yet</p>';
     } else {
         chatBox.innerHTML = messages.map(msg => 
             `<div class="chat-message">
-                <strong>${msg.user}</strong> <span class="chat-time">${msg.timestamp}</span>
-                <p>${msg.message}</p>
+                <strong>${escapeHtml(msg.user)}</strong> <span class="chat-time">${escapeHtml(msg.timestamp)}</span>
+                <p>${escapeHtml(msg.message)}</p>
             </div>`
         ).join('');
         chatBox.scrollTop = chatBox.scrollHeight;
@@ -639,9 +658,9 @@ function loadAdminPanel() {
     const adminChatList = document.getElementById('adminChatList');
     adminChatList.innerHTML = messages.map((msg, i) => `
         <tr>
-            <td>${msg.user}</td>
-            <td>${msg.message.substring(0, 50)}...</td>
-            <td>${msg.timestamp}</td>
+            <td>${escapeHtml(msg.user)}</td>
+            <td>${escapeHtml(msg.message.substring(0, 50))}...</td>
+            <td>${escapeHtml(msg.timestamp)}</td>
             <td><button class="btn-secondary" onclick="deleteMessage(${i})">Delete</button></td>
         </tr>
     `).join('');
@@ -656,12 +675,14 @@ function loadAdminPanel() {
     }).length;
 }
 
-function switchAdminTab(tab) {
+function switchAdminTab(tab, button) {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
     
     document.getElementById(tab + 'Tab').classList.add('active');
-    event.target.classList.add('active');
+    if (button) {
+        button.classList.add('active');
+    }
 }
 
 function updateOrderStatus(orderId) {

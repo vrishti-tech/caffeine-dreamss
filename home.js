@@ -4,6 +4,10 @@ window.addEventListener('load', () => {
     const authNav = document.getElementById('authNav');
     const userNav = document.getElementById('userNav');
 
+    if (!authNav || !userNav) {
+        return;
+    }
+
     if (currentUser) {
         authNav.style.display = 'none';
         userNav.style.display = 'flex';
@@ -18,7 +22,7 @@ window.addEventListener('load', () => {
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('currentUser');
-        location.reload();
+        window.location.href = 'index.html';
     }
 }
 

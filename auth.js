@@ -1,5 +1,9 @@
 let isLogin = true;
 
+function getUsers() {
+    return JSON.parse(localStorage.getItem('users')) || {};
+}
+
 function toggleForm() {
     isLogin = !isLogin;
     const formTitle = document.getElementById('formTitle');
@@ -61,7 +65,7 @@ function handleAuth() {
 
     if (isLogin) {
         // LOGIN
-        const users = JSON.parse(localStorage.getItem('users')) || {};
+        const users = getUsers();
         
         if (users[email] && users[email].password === password) {
             localStorage.setItem('currentUser', email);
@@ -84,7 +88,7 @@ function handleAuth() {
             return;
         }
 
-        const users = JSON.parse(localStorage.getItem('users')) || {};
+        const users = getUsers();
 
         if (users[email]) {
             document.getElementById('emailError').textContent = 'Email already registered';
@@ -138,9 +142,12 @@ function showSuccess(message) {
     setTimeout(() => successMsg.remove(), 2000);
 }
 
-document.getElementById('authForm').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        handleAuth();
-    }
-});
+const authForm = document.getElementById('authForm');
+if (authForm) {
+    authForm.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAuth();
+        }
+    });
+}
